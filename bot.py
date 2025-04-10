@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 from alpaca.trading.client import TradingClient
 from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
-from alpaca.data.historical import StockHistoricalDataClient
+from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.timeframe import TimeFrame
 
 # Load environment variables
@@ -20,7 +20,7 @@ DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
 
 # Initialize clients
 trading_client = TradingClient(ALPACA_API_KEY, ALPACA_SECRET_KEY, paper=True)
-data_client = StockHistoricalDataClient(ALPACA_API_KEY, ALPACA_SECRET_KEY)
+data_client = CryptoHistoricalDataClient()
 
 def get_account_info():
     account = trading_client.get_account()
