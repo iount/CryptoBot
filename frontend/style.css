@@ -1,0 +1,27 @@
+/* Style the entire page */
+body {
+  background-color: #f0f2f5; /* light gray background */
+  font-family: Arial, sans-serif; /* clean, readable font */
+  padding: 20px;
+}
+
+/* Style the heading */
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+/* Style boxes (account and trade info) */
+#account, #trade {
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin: 20px auto;
+  width: 300px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  color: #444;
+} 
