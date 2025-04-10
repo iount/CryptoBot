@@ -25,6 +25,9 @@ def serve_index():
 def serve_file(path):
     return send_from_directory('frontend', path)
 
-# Run the app (debug mode just helps you see errors during development)
+# Get the port from the environment (Render will provide it)
+port = int(os.environ.get('PORT', 5000))  # Use 5000 as default if not set
+
+# Run Flask on the public IP and correct port
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(host='0.0.0.0', port=port, debug=True) 
