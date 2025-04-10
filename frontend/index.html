@@ -2,36 +2,66 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>CryptoBot Dashboard</title>
+  <title>AI Crypto Trading Bot</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
 </head>
 <body>
-  <!-- This is the heading of your website -->
-  <h1>🚀 CryptoBot Dashboard</h1>
+  <div class="dashboard">
+    <header>
+      <h1>🤖 AI Crypto Trading Bot</h1>
+      <div class="status-indicator">
+        <span class="status-dot"></span>
+        <span class="status-text">Bot Status: Running</span>
+      </div>
+    </header>
 
-  <!-- This is a container that will show your account balance -->
-  <div id="account">
-    <h2>📊 Account Info</h2>
-    <p><strong>Equity:</strong> <span id="equity">Loading...</span></p>
-    <p><strong>Cash:</strong> <span id="cash">Loading...</span></p>
-    <p><strong>Buying Power:</strong> <span id="buyingPower">Loading...</span></p>
+    <div class="grid-container">
+      <!-- Account Overview -->
+      <div class="card account-overview">
+        <h2>💰 Account Overview</h2>
+        <div class="stats">
+          <div class="stat">
+            <span class="label">Total Equity</span>
+            <span id="equity" class="value">$0.00</span>
+          </div>
+          <div class="stat">
+            <span class="label">Available Cash</span>
+            <span id="cash" class="value">$0.00</span>
+          </div>
+          <div class="stat">
+            <span class="label">Buying Power</span>
+            <span id="buyingPower" class="value">$0.00</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Performance Chart -->
+      <div class="card performance-chart">
+        <h2>📈 Performance</h2>
+        <canvas id="performanceChart"></canvas>
+      </div>
+
+      <!-- Active Trades -->
+      <div class="card active-trades">
+        <h2>🔄 Active Trades</h2>
+        <div id="activeTrades" class="trades-list">
+          <!-- Trades will be added here dynamically -->
+        </div>
+      </div>
+
+      <!-- Trade History -->
+      <div class="card trade-history">
+        <h2>📊 Trade History</h2>
+        <div id="tradeHistory" class="history-list">
+          <!-- Trade history will be added here dynamically -->
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- This is where we show your last trade -->
-  <div id="trade">
-    <h2>📈 Last Trade</h2>
-    <p><strong>Symbol:</strong> <span id="symbol">Loading...</span></p>
-    <p><strong>Action:</strong> <span id="action">Loading...</span></p>
-    <p><strong>Price:</strong> <span id="price">Loading...</span></p>
-    <p><strong>Status:</strong> <span id="status">Loading...</span></p>
-  </div>
-
-  <!-- Button to run the bot -->
-  <div class="center">
-    <button onclick="runBot()" class="run-button">🤖 Run Trading Bot</button>
-  </div>
-
-  <!-- This is the JavaScript file that runs after the page loads -->
   <script src="script.js"></script>
 </body>
 </html> 
