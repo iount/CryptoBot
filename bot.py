@@ -9,6 +9,7 @@ from alpaca.trading.requests import MarketOrderRequest
 from alpaca.trading.enums import OrderSide, TimeInForce
 from alpaca.data.historical import CryptoHistoricalDataClient
 from alpaca.data.timeframe import TimeFrame
+from alpaca.data.requests import CryptoBarsRequest
 
 # Load environment variables
 load_dotenv()
@@ -48,9 +49,16 @@ def get_last_trade():
 
 def get_recent_prices(symbol="BTC/USD"):
     end = datetime.now()
-    start = end - timedelta(hours=24)  # Last 24 hours of data
+    start = end - timedelta(hours=24)
 
-    bars = data_client.get_crypto_bars(symbol, TimeFrame.Minute, start=start, end=end)
+    request_params = CryptoBarsRequest(
+        symbol_or_symbols=symbol,
+        timeframe=TimeFrame.Minute,
+        start=start,
+        end=end
+    )
+
+    bars = data_client.get_crypto_bars(request_params)
     
     if bars.df.empty:
         return []
