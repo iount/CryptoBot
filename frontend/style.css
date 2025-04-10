@@ -24,4 +24,30 @@ h1 {
 
 h2 {
   color: #444;
+}
+
+/* Center the run button */
+.center {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* Style the run button */
+.run-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.run-button:hover {
+  background-color: #45a049;
+}
+
+.run-button:active {
+  background-color: #3e8e41;
 } 

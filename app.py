@@ -1,7 +1,7 @@
 # Importing the necessary Python libraries
 from flask import Flask, jsonify, send_from_directory
 import os
-from bot import get_account_info, get_last_trade
+from bot import get_account_info, get_last_trade, run_bot_cycle
 
 # Create a Flask app instance (this is the web server)
 app = Flask(__name__)
@@ -15,6 +15,11 @@ def account():
 @app.route('/last-trade')
 def last_trade():
     return jsonify(get_last_trade())  # Call function from bot.py and return as JSON
+
+# Define a route to run the bot and get its decision
+@app.route('/run-bot')
+def run_bot_now():
+    return jsonify(run_bot_cycle())
 
 # Serve the frontend files
 @app.route('/')
