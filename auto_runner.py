@@ -48,7 +48,15 @@ def get_24h_data(symbol):
     return df['close'].tolist()
 
 def get_account_balance():
-    return float(trading_client.get_account().cash)
+    try:
+        account = trading_client.get_account()
+        print(f"Account status: {account.status}")
+        print(f"Buying power: {account.buying_power}")
+        print(f"Cash: {account.cash}")
+        return float(account.cash)
+    except Exception as e:
+        print(f"Error getting account balance: {e}")
+        return 0.0
 
 def get_pnl(entry_price, current_price):
     return round(current_price - entry_price, 2)
@@ -97,42 +105,54 @@ def ask_deepseek(symbol, prices, balance, position=None):
         return "hold"
 
 def place_order(symbol, side):
-    order = MarketOrderRequest(
-        symbol=symbol,
-        qty=1,
-        side=OrderSide.BUY if side == "buy" else OrderSide.SELL,
-        time_in_force=TimeInForce.GTC
-    )
     try:
-        trading_client.submit_order(order)
-        print(f"✅ {side.upper()} order placed for {symbol}")
+        order = MarketOrderRequest(
+            symbol=symbol,
+            qty=1,
+            side=OrderSide.BUY if side == "buy" else OrderSide.SELL,
+            time_in_force=TimeInForce.GTC
+        )
+        print(f"Placing {side} order for {symbol}...")
+        order_response = trading_client.submit_order(order)
+        print(f"Order placed successfully: {order_response}")
+        return True
     except Exception as e:
-        print(f"❌ Failed to place {side} order for {symbol}: {e}")
+        print(f"Error placing order: {e}")
+        return False
 
 def run_bot(symbol):
-    prices = get_24h_data(symbol)
-    if not prices:
-        print(f"⚠️ No data for {symbol}")
-        return
+    try:
+        print(f"\n=== Processing {symbol} ===")
+        prices = get_24h_data(symbol)
+        if not prices:
+            print(f"No price data available for {symbol}")
+            return
 
-    balance = get_account_balance()
-    current_pos = positions.get(symbol)
+        balance = get_account_balance()
+        print(f"Current balance: ${balance}")
+        
+        # Get current position
+        position = None
+        try:
+            position = trading_client.get_position(symbol)
+            print(f"Current position: {position}")
+        except:
+            print(f"No open position for {symbol}")
 
-    decision = ask_deepseek(symbol, prices, balance, current_pos)
+        decision = ask_deepseek(symbol, prices, balance, position)
+        print(f"AI Decision: {decision}")
 
-    print(f"🤖 DeepSeek decision for {symbol}: {decision.upper()}")
+        if decision == "buy" and not position:
+            if place_order(symbol, "buy"):
+                print(f"Successfully bought {symbol}")
+        elif decision == "sell" and position:
+            if place_order(symbol, "sell"):
+                print(f"Successfully sold {symbol}")
+        else:
+            print(f"Holding {symbol}")
 
-    if decision == "buy" and not current_pos:
-        place_order(symbol, "buy")
-        positions[symbol] = {"entry_price": prices[-1]}
-    elif decision == "sell" and current_pos:
-        place_order(symbol, "sell")
-        entry = current_pos['entry_price']
-        pnl = get_pnl(entry, prices[-1])
-        print(f"💸 Trade closed for {symbol}: P&L = ${pnl}")
-        del positions[symbol]
-    else:
-        print(f"📊 Holding {symbol}...")
+    except Exception as e:
+        print(f"Error in run_bot for {symbol}: {e}")
 
 # === MAIN LOOP ===
 print("🚀 AI Crypto Bot is running every minute...")
