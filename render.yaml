@@ -1,6 +1,12 @@
 services:
   - type: web
-    name: crypto-bot-backend
+    name: crypto-bot-dashboard
     env: python
     buildCommand: pip install -r requirements.txt
-    startCommand: python app.py 
+    startCommand: python app.py
+
+  - type: worker
+    name: crypto-bot-runner
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python auto_runner.py 
